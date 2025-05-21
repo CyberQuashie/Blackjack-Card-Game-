@@ -1,0 +1,13 @@
+.card-deck {
+  min-height: 100px; /* Minimum height for the card deck */
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center the cards */
+  gap: 10px; /* Space between cards */
+}
+.card-img {
+  width: 100px;
+  height: auto;
+  margin-right: 5px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
