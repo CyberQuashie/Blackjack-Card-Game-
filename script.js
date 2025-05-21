@@ -158,7 +158,6 @@ function setButtonstate(buttonId, enabled) {
 }
 
 function dealerPlay() {
-  setPlayerControls(false); // Disable player controls when dealer plays
   dealerCardsRevealed = true; // Set the flag to true when dealer plays
 
   while (dealerScore < 17) {
