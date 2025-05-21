@@ -56,6 +56,7 @@ function updateUI() {
   document.getElementById("player-score").textContent = `Score: ${playerScore}`;
 
   // Show dealer score only if cards revealed; else hide or show '?'
+
   document.getElementById("dealer-score").textContent = dealerCardsRevealed
     ? `Score: ${dealerScore}`
     : "Score: ?";
@@ -108,9 +109,25 @@ function checkWinner() {
   if (dealerScore > 21) return "Dealer Busts! Player Wins!";
   if (playerScore === 21) return "Blackjack! Player Wins!";
   if (dealerScore === 21) return "Blackjack! Dealer Wins!";
-  if (playerScore > dealerScore && dealerScore >= 17) return "Player Wins!";
-  if (dealerScore > playerScore && dealerScore >= 17) return "Dealer Wins!";
-  if (dealerScore === playerScore && dealerScore >= 17) return "It's a Tie!";
+  if (
+    dealerCardsRevealed === true &&
+    playerScore > dealerScore &&
+    dealerScore >= 17
+  )
+    return "Player Wins!";
+  if (
+    dealerCardsRevealed === true &&
+    dealerScore > playerScore &&
+    dealerScore >= 17
+  )
+    return "Dealer Wins!";
+  if (
+    dealerCardsRevealed === true &&
+    dealerScore === playerScore &&
+    dealerScore >= 17
+  )
+    return "It's a Tie!";
+
   return "";
 }
 
@@ -127,10 +144,21 @@ function playerHit() {
   playerScore = calculateScore(playerCards);
   updateUI();
   const result = checkWinner();
-  if (result) document.getElementById("result-text").textContent = result;
+  if (playerScore >= 21) {
+    document.getElementById("result-text").textContent = result;
+    setButtonstate("hit-btn", false); // Disable hit button if player score is 21 or more
+    setButtonstate("stand-btn", false); // Disable stand button if player score is 21 or more
+  } else {
+    setButtonstate("hit-btn", true); // Enable hit button if player score is less than 21
+    setButtonstate("stand-btn", true); // Enable stand button if player score is less than 21
+  }
+}
+function setButtonstate(buttonId, enabled) {
+  document.getElementById(buttonId).disabled = !enabled; // Disable button if enabled is false
 }
 
 function dealerPlay() {
+  setPlayerControls(false); // Disable player controls when dealer plays
   dealerCardsRevealed = true; // Set the flag to true when dealer plays
 
   while (dealerScore < 17) {
@@ -152,6 +180,8 @@ document.getElementById("restart-btn").addEventListener("click", () => {
   dealerScore = 0;
   dealerCardsRevealed = false; // Reset the flag
   document.getElementById("result-text").textContent = "";
+  setButtonstate("hit-btn", true); // Enable hit button
+  setButtonstate("stand-btn", true); // Enable stand button
   dealInitialCards();
 });
 
