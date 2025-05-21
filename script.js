@@ -148,17 +148,18 @@ function playerHit() {
     document.getElementById("result-text").textContent = result;
     setButtonstate("hit-btn", false); // Disable hit button if player score is 21 or more
     setButtonstate("stand-btn", false); // Disable stand button if player score is 21 or more
-  } else {
-    setButtonstate("hit-btn", true); // Enable hit button if player score is less than 21
-    setButtonstate("stand-btn", true); // Enable stand button if player score is less than 21
-  }
+  } else setButtonstate("hit-btn", true);
+  setButtonstate("stand-btn", true);
 }
+
 function setButtonstate(buttonId, enabled) {
   document.getElementById(buttonId).disabled = !enabled; // Disable button if enabled is false
 }
 
 function dealerPlay() {
   dealerCardsRevealed = true; // Set the flag to true when dealer plays
+  setButtonstate("hit-btn", false); // Disable hit button
+  setButtonstate("stand-btn", false); // Disable stand button
 
   while (dealerScore < 17) {
     dealerCards.push(getRandomCard());
